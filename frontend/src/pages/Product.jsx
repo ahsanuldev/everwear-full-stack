@@ -37,12 +37,12 @@ const Product = () => {
                 onClick={() => setImage(item)}
                 src={item}
                 key={idx}
-                className="w-[24%] sm:w-full sm:mb-3 flex-shrink-0 cursor-pointer aspect-[3/4] object-cover rounded"
+                className="w-[24%] sm:w-full sm:mb-3 flex-shrink-0 cursor-pointer aspect-square object-cover"
               />
             ))}
           </div>
 
-          <div className="w-full sm:w-[80%] aspect-[3/4] overflow-hidden rounded">
+          <div className="w-full sm:w-[80%] aspect-[3/4] overflow-hidden">
             <img src={image} className="w-full h-full object-cover" alt="product image" />
           </div>
         </div>
