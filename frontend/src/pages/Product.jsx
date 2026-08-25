@@ -31,19 +31,19 @@ const Product = () => {
       <div className="flex gap-12 sm:gap-12 flex-col sm:flex-row">
         {/* Product Images */}
         <div className="flex-1 flex flex-col-reverse gap-3 sm:flex-row">
-          <div className="flex sm:flex-col overflow-x-auto sm:overflow-y-scroll justify-between sm:justify-normal sm:w-[18.7%] w-full">
+          <div className="flex sm:flex-col overflow-x-auto sm:overflow-y-scroll justify-between sm:justify-normal sm:w-[18.7%] w-full gap-2">
             {productData.image.map((item, idx) => (
               <img
                 onClick={() => setImage(item)}
                 src={item}
                 key={idx}
-                className="w-[24%] sm:w-full sm:mb-3 flex-shrink-0 cursor-pointer"
+                className="w-[24%] sm:w-full sm:mb-3 flex-shrink-0 cursor-pointer aspect-[3/4] object-cover rounded"
               />
             ))}
           </div>
 
-          <div className="w-full sm:w-[80%]">
-            <img src={image} className="w-full h-auto" alt="product image" />
+          <div className="w-full sm:w-[80%] aspect-[3/4] overflow-hidden rounded">
+            <img src={image} className="w-full h-full object-cover" alt="product image" />
           </div>
         </div>
 
@@ -68,8 +68,29 @@ const Product = () => {
           <div className="flex flex-col gap-4 my-8">
             <p>Select Size</p>
             <div className="flex gap-2">
-              {productData.sizes.map((item, idx) => (
-                <button onClick={() => setSize(item)} key={idx} className={`border py-2 px-4 ${size === item ? "bg-black text-white" : "bg-gray-100"}`}>{item}</button>
+              {(
+                (Array.isArray(productData.sizes) && productData.sizes.length > 0)
+                  ? productData.sizes
+                  : (typeof productData.sizes === "string" && productData.sizes)
+                  ? (() => {
+                      try {
+                        const parsed = JSON.parse(productData.sizes);
+                        return Array.isArray(parsed) && parsed.length > 0 ? parsed : ["S", "M", "L", "XL"];
+                      } catch (e) {
+                        return ["S", "M", "L", "XL"];
+                      }
+                    })()
+                  : ["S", "M", "L", "XL"]
+              ).map((item, idx) => (
+                <button
+                  onClick={() => setSize(item)}
+                  key={idx}
+                  className={`border py-2 px-4 ${
+                    size === item ? "bg-black text-white" : "bg-gray-100"
+                  }`}
+                >
+                  {item}
+                </button>
               ))}
             </div>
             {errorMsg && <p className="text-red-600">{errorMsg}</p>}

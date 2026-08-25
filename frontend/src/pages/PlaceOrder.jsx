@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Title from '../utils/Title'
 import CartTotal from '../components/CartTotal'
 import { assets } from '../assets/assets'
@@ -10,6 +10,13 @@ const PlaceOrder = () => {
 
   const [method, setMethod] = useState('cod');
   const {navigate, backendUrl, token, cartItems, setCartItems, getCartAmount, delivery_fee, products} = useContext(ShopContext);
+
+  useEffect(() => {
+    if (!token) {
+      toast.error("Please login to proceed with payment.");
+      navigate("/login");
+    }
+  }, [token]);
   const [formData, setFormData] = useState({
     firstName : "", 
     lastName : "",

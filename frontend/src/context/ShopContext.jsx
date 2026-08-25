@@ -40,6 +40,7 @@ const ShopContextProvider = (props) => {
     }
 
     setCartItems(cartData);
+    toast.success("Added to cart");
 
     if (token) {
       try {
@@ -52,8 +53,6 @@ const ShopContextProvider = (props) => {
         console.log(error);
         toast.error(error.message);
       }
-    } else {
-      toast.error("Login first to add to cart.");
     }
   };
 
