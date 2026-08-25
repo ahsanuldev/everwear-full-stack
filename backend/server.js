@@ -8,24 +8,13 @@ import productRouter from './routes/productRouter.js'
 import cartRouter from './routes/cartRouter.js'
 import orderRouter from './routes/orderRouter.js'
 
+// Connect to services
+connectDB();
+connectCloudinary();
+
 // App Config
 const app = express()
 const port = process.env.PORT || 4000
-
-
-// // CORS configuration
-// const corsOptions = {
-//     origin: function (origin, callback) {
-//       if (allowedOrigins.includes(origin) || !origin) {
-//         // Allow requests from the frontend or if there's no origin (e.g., from Postman)
-//         callback(null, true);
-//       } else {
-//         callback(new Error('Not allowed by CORS'));
-//       }
-//     },
-//     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify the allowed methods
-//     allowedHeaders: ['Content-Type', 'Authorization'] // Specify allowed headers
-//   };
 
 // middlewares
 app.use(express.json());
@@ -45,9 +34,8 @@ app.get("/", (req, res) => {
     res.send("API WORKING")
 })
 
-
 app.listen(port, () => {
     console.log("Server is running at PORT : " + port);
-    connectDB();
-    connectCloudinary();
 })
+
+export default app;
