@@ -58,10 +58,11 @@ const Orders = () => {
                 <img src={item.image[0]} className='w-16 sm:w-20' alt="" />
                 <div>
                   <p className='sm:text-base font-medium'>{item.name}</p>
-                  <div className='flex items-center gap-3 mt-1 text-base text-gray-700'>
+                  <div className='flex items-center gap-3 mt-1 text-base text-gray-700 flex-wrap'>
                     <p>{currency} {item.price}</p>
                     <p>Quantity : {item.quantity}</p>
                     <p>Size : {item.size}</p>
+                    {item.color && <p>Color : {item.color}</p>}
                   </div>
 
                   <p className='mt-1'>Date : <span className='text-gray-400'>{new Date(item.date).toDateString()}</span></p>

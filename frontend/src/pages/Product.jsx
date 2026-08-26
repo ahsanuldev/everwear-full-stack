@@ -10,6 +10,11 @@ const Product = () => {
   const [productData, setProductData] = useState(false);
   const [image, setImage] = useState("");
   const [size, setSize] = useState("");
+  const [color, setColor] = useState("");
+
+  const availableColors = (Array.isArray(productData?.colors) && productData.colors.length > 0)
+    ? productData.colors
+    : ["Black", "Navy", "Olive"];
 
   const fetchProductData = async () => {
     products.map((item) => {
@@ -66,7 +71,7 @@ const Product = () => {
           <p className="mt-5 text-gray-500 md:w-4/5">{productData.description}</p>
 
           <div className="flex flex-col gap-4 my-8">
-            <p>Select Size</p>
+            <p className="font-medium">Select Size</p>
             <div className="flex gap-2">
               {(
                 (Array.isArray(productData.sizes) && productData.sizes.length > 0)
@@ -85,18 +90,53 @@ const Product = () => {
                 <button
                   onClick={() => setSize(item)}
                   key={idx}
-                  className={`border py-2 px-4 ${
-                    size === item ? "bg-black text-white" : "bg-gray-100"
+                  className={`border py-2 px-4 transition-all ${
+                    size === item ? "bg-black text-white" : "bg-gray-100 text-gray-800"
                   }`}
                 >
                   {item}
                 </button>
               ))}
             </div>
-            {errorMsg && <p className="text-red-600">{errorMsg}</p>}
+
+            <p className="font-medium mt-2">Select Color</p>
+            <div className="flex flex-wrap gap-3 items-center">
+              {availableColors.map((item, idx) => (
+                <button
+                  onClick={() => setColor(item)}
+                  key={idx}
+                  className={`border py-2 px-4 flex items-center gap-2 transition-all ${
+                    color === item ? "bg-black text-white border-black" : "bg-gray-100 text-gray-800 border-gray-200"
+                  }`}
+                >
+                  <span
+                    className="w-3.5 h-3.5 rounded-full border border-gray-300 inline-block"
+                    style={{
+                      backgroundColor:
+                        item.toLowerCase() === "navy"
+                          ? "#000080"
+                          : item.toLowerCase() === "olive"
+                          ? "#808000"
+                          : item.toLowerCase() === "black"
+                          ? "#000000"
+                          : item.toLowerCase() === "red"
+                          ? "#ef4444"
+                          : item.toLowerCase() === "blue"
+                          ? "#3b82f6"
+                          : item.toLowerCase() === "white"
+                          ? "#ffffff"
+                          : "#9ca3af"
+                    }}
+                  ></span>
+                  {item}
+                </button>
+              ))}
+            </div>
+
+            {errorMsg && <p className="text-red-600 text-sm font-medium mt-1">{errorMsg}</p>}
           </div>
 
-          <button onClick={() => addToCart(productData._id, size)} className="bg-black text-white px-8 py-3 text-sm active:bg-gray-700"> ADD TO CART </button>
+          <button onClick={() => addToCart(productData._id, size, color)} className="bg-black text-white px-8 py-3 text-sm active:bg-gray-700"> ADD TO CART </button>
           <hr className="mt-8 sm:w-4/5"/>
           <div className="text-sm text-gray-500 mt-5 flex flex-col gap-1">
               <p>100% Original Product.</p>

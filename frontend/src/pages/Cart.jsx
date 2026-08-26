@@ -18,9 +18,12 @@ const Cart = () => {
       for (const items in cartItems) {
         for (const item in cartItems[items]) {
           if (cartItems[items][item] > 0) {
+            const hasColor = item.includes("_");
             tempData.push({
               _id: items,
-              size: item,
+              itemKey: item,
+              size: hasColor ? item.split("_")[0] : item,
+              color: hasColor ? item.split("_")[1] : "",
               quantity: cartItems[items][item],
             });
           }
@@ -42,6 +45,8 @@ const Cart = () => {
             (product) => product._id === item._id
           );
 
+          if (!productData) return null;
+
           return (
             <div
               key={index}
@@ -58,13 +63,18 @@ const Cart = () => {
                   <p className="text-xs sm:text-lg font-medium">
                     {productData.name}
                   </p>
-                  <div className="flex items-center gap-5 mt-2">
+                  <div className="flex items-center gap-3 mt-2 flex-wrap">
                     <p>
                       {currency} {productData.price}
                     </p>
-                    <p className="px-2 sm:px-3 sm:py-1 border bg-slate-50">
-                      {item.size}{" "}
+                    <p className="px-2 sm:px-3 py-1 border bg-slate-50 text-xs sm:text-sm font-medium">
+                      Size: {item.size}
                     </p>
+                    {item.color && (
+                      <p className="px-2 sm:px-3 py-1 border bg-slate-50 text-xs sm:text-sm font-medium">
+                        Color: {item.color}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -74,7 +84,7 @@ const Cart = () => {
                     ? null
                     : updateQuantity(
                         item._id,
-                        item.size,
+                        item.itemKey,
                         Number(e.target.value)
                       )
                 }
@@ -85,7 +95,7 @@ const Cart = () => {
                 defaultValue={item.quantity}
               />
               <RiDeleteBin7Line
-                onClick={() => updateQuantity(item._id, item.size, 0)}
+                onClick={() => updateQuantity(item._id, item.itemKey, 0)}
                 className="size-5 text-gray-600 mr-4 cursor-pointer"
               />
             </div>

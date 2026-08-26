@@ -5,20 +5,21 @@ import userModel from '../models/userModel.js'
 // Add products to user cart
 const addToCart = async (req, res) => {
     try {
-        const {userId, itemId, size} = req.body;
+        const {userId, itemId, size, color, itemKey: reqItemKey} = req.body;
+        const itemKey = reqItemKey || (color ? `${size}_${color}` : size);
 
         const userData = await userModel.findById(userId);
-        let cartData = await userData.cartData;
+        let cartData = await userData.cartData || {};
 
         if (cartData[itemId]) {
-            if (cartData[itemId][size]) {
-                cartData[itemId][size] += 1
+            if (cartData[itemId][itemKey]) {
+                cartData[itemId][itemKey] += 1
             }else {
-                cartData[itemId][size] = 1
+                cartData[itemId][itemKey] = 1
             }
         }else{
             cartData[itemId] = {};
-            cartData[itemId][size] = 1; 
+            cartData[itemId][itemKey] = 1; 
         }
 
         await userModel.findByIdAndUpdate(userId, {cartData})
@@ -34,12 +35,16 @@ const addToCart = async (req, res) => {
 //  Update user cart
 const updateCart = async (req, res) => {
     try {
-        const {userId, itemId, size, quantity} = req.body;
+        const {userId, itemId, size, color, itemKey: reqItemKey, quantity} = req.body;
+        const itemKey = reqItemKey || (color ? `${size}_${color}` : size);
 
         const userData = await userModel.findById(userId);
-        let cartData = await userData.cartData;
+        let cartData = await userData.cartData || {};
 
-        cartData[itemId][size] = quantity;
+        if (!cartData[itemId]) {
+            cartData[itemId] = {};
+        }
+        cartData[itemId][itemKey] = quantity;
 
         await userModel.findByIdAndUpdate(userId, {cartData})
         res.json({success : true, message : "Cart updated successfully."})

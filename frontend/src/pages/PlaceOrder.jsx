@@ -47,7 +47,11 @@ const PlaceOrder = () => {
           if (cartItems[items][item] > 0) {
             const itemInfo = structuredClone(products.find(product => product._id === items));
             if (itemInfo) {
-              itemInfo.size = item;
+              const hasColor = item.includes("_");
+              itemInfo.size = hasColor ? item.split("_")[0] : item;
+              if (hasColor) {
+                itemInfo.color = item.split("_")[1];
+              }
               itemInfo.quantity = cartItems[items][item];
               orderItems.push(itemInfo)
             }
