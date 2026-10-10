@@ -21,6 +21,14 @@ const App = () => {
     localStorage.setItem('token', token);
   }, [token])
 
+    useEffect(() => {
+    const script = document.createElement('script');
+    script.src = "https://api.labtoai.com/widget.js";
+    script.setAttribute('data-api-key', "aiw_live_72fcd037176f7a8afd7117db8c47f495d0f848d0cb4251be");
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
+
   return (
     <div className="bg-gray-50 min-h-screen">
       <ToastContainer />
