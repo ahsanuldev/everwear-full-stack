@@ -1,4 +1,4 @@
-import React from 'react'
+import { useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Home from './pages/Home'
 import Collection from './pages/Collection'
@@ -19,6 +19,15 @@ import Footer from './components/Footer'
 import Search from './components/Search'
 
 const App = () => {
+
+    useEffect(() => {
+    const script = document.createElement('script');
+    script.src = "https://api.labtoai.com/widget.js";
+    script.setAttribute('data-api-key', "aiw_live_72fcd037176f7a8afd7117db8c47f495d0f848d0cb4251be");
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
+
   return (
     <div>
       <ToastContainer />
